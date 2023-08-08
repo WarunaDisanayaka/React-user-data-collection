@@ -43,7 +43,7 @@ function Dashboard() {
 				</div>
 				<div class="col p-0 m-0">
 					<div className='p-2 d-flex justify-content-center shadow'>
-						<h4>Employee Management System</h4>						
+						<h4>User Management System</h4>						
 					</div>
 					<Outlet />
 				</div>
