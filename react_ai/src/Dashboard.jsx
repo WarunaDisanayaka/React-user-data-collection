@@ -27,13 +27,14 @@ function Dashboard() {
 									<i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline">Dashboard</span> </Link>
 							</li>
 							<li>
-								<Link to="/employee" className="nav-link px-0 align-middle text-white">
-									<i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Employees</span> </Link>
+								<Link to="/users" className="nav-link px-0 align-middle text-white">
+									<i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Users</span> </Link>
 							</li>
-							<li>
-								<Link to="profile" className="nav-link px-0 align-middle text-white">
-									<i className="fs-4 bi-person"></i> <span className="ms-1 d-none d-sm-inline">Profile</span></Link>
+                            <li>
+								<Link to="/users" className="nav-link px-0 align-middle text-white">
+                                <i className="fs-4 bi bi-bar-chart"></i> <span className="ms-1 d-none d-sm-inline">Prediction</span> </Link>
 							</li>
+							
 							<li onClick={handleLogout}>
 								<a href="#" className="nav-link px-0 align-middle text-white">
 									<i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span></a>
@@ -42,9 +43,6 @@ function Dashboard() {
 					</div>
 				</div>
 				<div class="col p-0 m-0">
-					<div className='p-2 d-flex justify-content-center shadow'>
-						<h4>User Management System</h4>						
-					</div>
 					<Outlet />
 				</div>
 			</div>
