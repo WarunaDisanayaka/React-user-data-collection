@@ -31,6 +31,10 @@ function Addusers() {
   return (
     <div className="container-fluid mt-5">
       <h1 className="text-center">Add Users</h1>
+     
+      <div className="row justify-content-center"> {/* Centering the form */}
+    <div className="col-md-10"> 
+    <h2>Private Details</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Full Name</label>
@@ -89,12 +93,55 @@ function Addusers() {
           <label>Polling Station</label>
           <input type="text" className="form-control" name="pollingStation" value={formData.pollingStation} onChange={handleChange} />
         </div>
-        <div className="mt-3 text-right">
+        <h2>Service Details</h2>
+        <div className="form-group">
+      <label>Current Position</label>
+      <input
+        type="text"
+        className="form-control"
+        name="currentPosition"
+        value={formData.currentPosition}
+        onChange={handleChange}
+      />
+    </div>
+    <div className="form-group">
+      <label>Experience</label>
+      <input
+        type="text"
+        className="form-control"
+        name="experience"
+        value={formData.experience}
+        onChange={handleChange}
+      />
+    </div>
+    <div className="form-group">
+      <label>Current Salary</label>
+      <input
+        type="text"
+        className="form-control"
+        name="currentSalary"
+        value={formData.currentSalary}
+        onChange={handleChange}
+      />
+    </div>
+    <div className="form-group">
+      <label>Name of Institution</label>
+      <input
+        type="text"
+        className="form-control"
+        name="institutionName"
+        value={formData.institutionName}
+        onChange={handleChange}
+      />
+    </div>
+    <div className="mt-3 mb-4 text-right">
           <button type="submit" className="btn btn-primary">
             Add User
           </button>
         </div>
       </form>
+      </div>
+      </div>
     </div>
   );
 }
