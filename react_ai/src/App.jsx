@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import User from './User';
 import Home from './Home';
 import Addusers from './Addusers';
+import Prediction from './Prediction';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/users' element={<User/>}></Route>
         <Route path='/home' element={<Home/>}></Route>
         <Route path='/create' element={<Addusers/>}></Route>
+        <Route path='/prediction' element={<Prediction/>}></Route>
     </Route>
     <Route path='/login' element={<Login/>}></Route>
 </Routes>   
