@@ -8,7 +8,7 @@ function Prediction() {
   const [csvFile, setCsvFile] = useState(null);
 
   // Mock data for select options
-  const provinces = ['Province A', 'Province B', 'Province C'];
+  const provinces = ['Central', 'North Central', 'Northern','Eastern','North Western','Southern','Uva','Sabaragamuwa','Western'];
   const districts = ['District X', 'District Y', 'District Z'];
   const divisions = ['Division 1', 'Division 2', 'Division 3'];
   const stations = ['Station A', 'Station B', 'Station C'];
