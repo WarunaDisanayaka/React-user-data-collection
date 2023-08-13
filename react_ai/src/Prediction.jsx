@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios for making HTTP requests
 
 function Prediction() {
   const [selectedProvince, setSelectedProvince] = useState('');
@@ -26,6 +27,28 @@ function Prediction() {
     console.log('Selected Division:', selectedDivision);
     console.log('Selected Station:', selectedStation);
     console.log('CSV File:', csvFile);
+  };
+
+  const [predictionResult, setPredictionResult] = useState(null);
+
+
+  const handlePredict = () => {
+    // Create a FormData object to send the CSV file
+    const formData = new FormData();
+    formData.append('file', csvFile);
+
+    // Make a POST request to the Flask API
+    axios.post('http://127.0.0.1:5000/predict', formData)
+      .then(response => {
+        console.log('Prediction Result:', response.data);
+        // Handle the prediction result here (e.g., display the result)
+        setPredictionResult(response.data);
+
+      })
+      .catch(error => {
+        console.error('Prediction Error:', error);
+        // Handle the error here (e.g., show an error message)
+      });
   };
 
   return (
@@ -98,10 +121,26 @@ function Prediction() {
           </button>
         </div>
         <div className="col-md-6">
-          <button className="btn btn-success" >
+          <button className="btn btn-success" onClick={handlePredict}>
             Predict
           </button>
         </div>
+        {/* Display the prediction result */}
+      {predictionResult && (
+        <div className="mt-3">
+          <h4 className="mb-3">Prediction Result</h4>
+          {Object.keys(predictionResult).map(position => (
+            <div key={position}>
+              <h5>{position}</h5>
+              <ul>
+                {predictionResult[position].map(name => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
       </div>
     </div>
   );
