@@ -41,6 +41,40 @@ app.post('/login',(req,res)=>{
     })
 });
 
+// Insert API
+app.post('/create', (req, res) => {
+    const sql = "INSERT INTO VoterInformation (`Full_Name`, `DOB`, `Email`, `Age`, `Education_Level`, `Gender`, `Current_City`, `Province`, `District`, `Polling_Division`, `Polling_Station`, `Current_Position`, `Name_of_Institute`, `Experience`, `Current_Salary`, `Position_Type`, `NIC`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+        req.body.fullName,
+        req.body.dob,
+        req.body.email,
+        req.body.age,
+        req.body.eduLevel,
+        req.body.gender,
+        req.body.currentCity,
+        req.body.province,
+        req.body.district,
+        req.body.pollingDivision,
+        req.body.pollingStation,
+        req.body.currentPosition,
+        req.body.institutionName,
+        req.body.experience,
+        req.body.currentSalary,
+        req.body.positionType,
+        req.body.nic
+    ];
+
+    con.query(sql, values, (err, result) => {
+        if (err) {
+            console.error('Database Error:', err);
+            return res.json({ Status: "Error", Error: "Error in Database", DatabaseError: err.message });
+        } else {
+            return res.json({ Status: "Success" });
+        }
+    });
+});
+
+
 
 // Server starting
 app.listen(8081,()=>{
