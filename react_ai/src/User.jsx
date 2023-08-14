@@ -1,28 +1,59 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
+import axios from 'axios';
+import { saveAs } from 'file-saver';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Container, Table ,Button} from 'react-bootstrap'; // Import Bootstrap components
 import { Link } from 'react-router-dom';
+
 
 function User() {
 
   // Add user details
   const [showModal, setShowModal] = useState(false);
-  const [newUserData, setNewUserData] = useState({ id: '', col1: '', col2: '', col3: '', col4: '', col5: '', col6: '' });
+  const [data, setData] = useState([]);
   const [users, setUsers] = useState([
     { id: '1', col1: 'Data 1', col2: 'Data 2', col3: 'Data 3', col4: 'Data 4', col5: 'Data 5', col6: 'Data 6' }
     // You can add more initial user data here
   ]);
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setNewUserData({ id: '', col1: '', col2: '', col3: '', col4: '', col5: '', col6: '' });
+  const downloadCsv = () => {
+    try {
+      // Create CSV content
+      const csvContent = [
+        Object.keys(data[0]).join(','), // CSV header row
+        ...data.map(employee => Object.values(employee).join(',')), // Data rows
+      ].join('\n');
+  
+      // Create a Blob with the CSV content
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+  
+      // Use the FileSaver library to initiate the download
+      saveAs(blob, 'user_data.csv');
+    } catch (error) {
+      console.error('Error creating CSV:', error);
+    }
   };
+  
+  const handleDelete = (id)=>{
+    axios.delete('http://localhost:8081/delete/'+id)
+    .then(res=>{
+      if (res.data.Status==="Success") {
+       window.location.reload(true)
+      }
+    })    
+  }
+  
 
-  const handleAddUser = () => {
-    setUsers([...users, newUserData]);
-    handleCloseModal();
-  };
+  useEffect(() => {
+    axios.get('http://localhost:8081/getEmployees')
+    .then(res=>{
+      if (res.data.Status==="Success") {
+        console.log(res.data.Result);
+        setData(res.data.Result)
+      }
+    })
+    .catch(err=>console.log(err));
+  }, [])
 
   return (
     <Container className="d-flex flex-column align-items-center">
@@ -31,27 +62,39 @@ function User() {
         <Link to="/create" variant="primary" className="btn btn-primary my-3">
           Add Users
         </Link>
+        <Button variant="success" className="my-3 ms-3" onClick={downloadCsv}>
+          Download CSV
+        </Button>
       </div>
       <Table striped bordered hover className="mt-3">
         <thead>
           <tr>
             <th>Full name</th>
-            <th>Gender</th>
+            <th>DOB</th>
+            <th>Email</th>
             <th>Age</th>
-            <th>Ex</th>
-            <th>Sal</th>
+            <th>Education Level</th>
+            <th>Gender</th>
+            <th>Currenty City</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
-            <td>Data 3</td>
-            <td>Data 4</td>
-            <td>Data 5</td>
-            <td>Data 6</td>
+          {data.map((employee,index)=>{
+            return <tr key={index}> 
+            <td>{employee['Full Name']}</td>
+            <td>{employee['DOB']}</td>
+            <td>{employee['Email']}</td>
+            <td>{employee['Age']}</td>
+            <td>{employee['Education Level']}</td>
+            <td>{employee['Gender']}</td>
+            <td>{employee['Current City']}</td>
+            <td>
+              <Link to={`/employeeEdit/`+employee.id} className='btn btn-primary btn-sm me-2'>Edit</Link>
+              <button onClick={e=>handleDelete(employee.id)} className='btn btn-sm btn-danger'>Delete</button>
+            </td>
           </tr>
+             })}
         </tbody>
       </Table>
     </Container>

@@ -7,6 +7,7 @@ import User from './User';
 import Home from './Home';
 import Addusers from './Addusers';
 import Prediction from './Prediction';
+import Editusers from './Editusers';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path='/home' element={<Home/>}></Route>
         <Route path='/create' element={<Addusers/>}></Route>
         <Route path='/prediction' element={<Prediction/>}></Route>
+        <Route path='/employeeEdit/:id' element={<Editusers/>}></Route>
     </Route>
     <Route path='/login' element={<Login/>}></Route>
 </Routes>   
