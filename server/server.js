@@ -43,7 +43,7 @@ app.post('/login',(req,res)=>{
 
 // Insert API
 app.post('/create', (req, res) => {
-    const sql = "INSERT INTO VoterInformation (`Full_Name`, `DOB`, `Email`, `Age`, `Education_Level`, `Gender`, `Current_City`, `Province`, `District`, `Polling_Division`, `Polling_Station`, `Current_Position`, `Name_of_Institute`, `Experience`, `Current_Salary`, `Position_Type`, `NIC`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO VoterInformation (`Full Name`, `DOB`, `Email`, `Age`, `Education Level`, `Gender`, `Current City`, `Province`, `District`, `Polling Division`, `Polling Station`, `Current Position`, `Name of Institute`, `Experience`, `Current Salary`, `Position Type`, `NIC`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
         req.body.fullName,
         req.body.dob,
@@ -74,7 +74,88 @@ app.post('/create', (req, res) => {
     });
 });
 
+app.get('/getEmployees',(req,res)=>{
+    const sql="SELECT * FROM VoterInformation";
+    con.query(sql,(err,result)=>{
+        if (err) return res.json({Error:"Get employee error in sql"});
+        return res.json({Status:"Success",Result:result});
+    })
+})
 
+
+app.get('/getEmployees/:id',(req,res)=>{
+    const id=req.params.id;
+    const sql="SELECT * FROM VoterInformation WHERE id = ?";
+    con.query(sql,[id],(err,result)=>{
+        if (err) return res.json({Error:"Get employee error in sql"});
+        return res.json({Status:"Success",Result:result});
+    })
+})
+
+app.put('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = `
+      UPDATE VoterInformation 
+      SET 
+        \`Full Name\`=?, 
+        DOB=?, 
+        Email=?, 
+        Age=?, 
+        \`Education Level\`=?, 
+        Gender=?, 
+        \`Current City\`=?, 
+        Province=?, 
+        District=?, 
+        \`Polling Division\`=?, 
+        \`Polling Station\`=?, 
+        \`Current Position\`=?, 
+        \`Name of Institute\`=?, 
+        Experience=?, 
+        \`Current Salary\`=?, 
+        \`Position Type\`=?, 
+        NIC=?  
+      WHERE id = ?`;
+    
+    const values = [
+      req.body.fullName,
+      req.body.dob,
+      req.body.email,
+      req.body.age,
+      req.body.eduLevel,
+      req.body.gender,
+      req.body.currentCity,
+      req.body.province,
+      req.body.district,
+      req.body.pollingDivision,
+      req.body.pollingStation,
+      req.body.currentPosition,
+      req.body.institutionName,
+      req.body.experience,
+      req.body.currentSalary,
+      req.body.positionType,
+      req.body.nic,
+      id // Place id at the end of the values array
+    ];
+    
+    con.query(sql, values, (err, result) => {
+        if (err) {
+          console.error('SQL Error:', err); // Log the error
+          return res.json({ Error: "Update error in SQL" });
+        }
+        return res.json({ Status: "Success", Result: result });
+      });
+      
+  });
+
+  app.delete('/delete/:id',(req,res)=>{
+    const id=req.params.id;
+    const sql="DELETE FROM VoterInformation WHERE id = ?";
+    con.query(sql,[id],(err,result)=>{
+        if (err) return res.json({Error:"Get employee error in sql"});
+        return res.json({Status:"Success",Result:result});
+    })
+})
+  
 
 // Server starting
 app.listen(8081,()=>{

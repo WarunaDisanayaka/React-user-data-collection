@@ -8,3 +8,7 @@
 .add-users .form-group{
   margin: 0.5rem;
 }
+
+.error-text{
+  color: red;
+}

@@ -1,181 +1,94 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-function Addusers() {
-
+function Editusers() {
 const [formData, setFormData] = useState({
-    fullName: '',
-    dob: '',
-    email: '',
-    nic: '',
-    age: '',
-    eduLevel: '',
-    gender: '',
-    currentCity: '',
-    pollingStation: '',
-    province: '',
-    district: '',
-    pollingDivision: '',
-    currentPosition: '',
-    experience: '',
-    currentSalary: '',
-    positionType:'',
-    institutionName: '',
-  });
-
-  const navigate=useNavigate();
-
+fullName: '',
+dob: '',
+email: '',
+nic: '',
+age: '',
+eduLevel: '',
+gender: '',
+currentCity: '',
+pollingStation: '',
+province: '',
+district: '',
+pollingDivision: '',
+currentPosition: '',
+experience: '',
+currentSalary: '',
+positionType:'',
+institutionName: '',
+});
+const [data, setData] = useState([]);
 const handleChange = (e) => {
 const { name, value } = e.target;
-
 setFormData((prevData) => ({
-  ...prevData,
-  [name]: value,
-    }));
-  };
-
-  const [errors, setErrors] = useState({
-   fullName: '',
-   dob: '',
-   email: '',
-   nic: '',
-   age: '',
-   eduLevel: '',
-   gender: '',
-   currentCity: '',
-   pollingStation: '',
-   province: '',
-   district: '',
-   pollingDivision: '',
-   currentPosition: '',
-   experience: '',
-   currentSalary: '',
-   positionType: '',
-   institutionName: '',
- });
- 
- const isValidEmail = (email) => {
-   // Basic email validation regex
-   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-   return emailRegex.test(email);
- };
-
-  const validateForm = () => {
-   const newErrors = { ...errors };
- 
-   // Validate required fields
-   if (!formData.fullName) {
-     newErrors.fullName = 'Full Name is required';
-   }
- 
-   if (!formData.dob) {
-     newErrors.dob = 'Date of Birth is required';
-   }
- 
-   if (!formData.email) {
-     newErrors.email = 'Email is required';
-   } else if (!isValidEmail(formData.email)) {
-     newErrors.email = 'Invalid email format';
-   }
- 
-   // Add more validation rules for other fields
-   if (!formData.nic) {
-     newErrors.nic = 'NIC is required';
-   }
- 
-   if (!formData.age) {
-     newErrors.age = 'Age is required';
-   }
- 
-   if (!formData.eduLevel) {
-     newErrors.eduLevel = 'Educational Level is required';
-   }
- 
-   if (!formData.gender) {
-     newErrors.gender = 'Gender is required';
-   }
- 
-   if (!formData.currentCity) {
-     newErrors.currentCity = 'Current City is required';
-   }
- 
-   if (!formData.province) {
-     newErrors.province = 'Province is required';
-   }
- 
-   if (!formData.district) {
-     newErrors.district = 'District is required';
-   }
- 
-   if (!formData.pollingDivision) {
-     newErrors.pollingDivision = 'Polling Division is required';
-   }
- 
-   if (!formData.pollingStation) {
-     newErrors.pollingStation = 'Polling Station is required';
-   }
- 
-   if (!formData.currentPosition) {
-     newErrors.currentPosition = 'Current Position is required';
-   }
- 
-   if (!formData.experience) {
-     newErrors.experience = 'Experience is required';
-   }
- 
-   if (!formData.currentSalary) {
-     newErrors.currentSalary = 'Current Salary is required';
-   }
- 
-   if (!formData.institutionName) {
-     newErrors.institutionName = 'Institution Name is required';
-   }
- 
-   if (!formData.positionType) {
-     newErrors.positionType = 'Position Type is required';
-   }
- 
-   setErrors(newErrors);
-   return Object.values(newErrors).every((error) => error === '');
- };
- 
-
+...prevData,
+[name]: value,
+}));
+};
+const {id}=useParams();
+const navigate=useNavigate();
+useEffect(() => {
+axios.get('http://localhost:8081/getEmployees/' + id)
+.then(res => {
+if (res.data.Status === 'Success') {
+const userData = res.data.Result;
+setFormData({...formData,
+fullName: res.data.Result[0]['Full Name'] || '',
+dob: res.data.Result[0]['DOB'] || '',
+email: res.data.Result[0]['Email'] || '',
+nic: res.data.Result[0]['NIC'] || '',
+age: res.data.Result[0]['Age'] || '',
+eduLevel: res.data.Result[0]['Education Level'] || '',
+gender: res.data.Result[0]['Gender'] || '',
+currentCity: res.data.Result[0]['Current City'] || '',
+pollingStation: res.data.Result[0]['Polling Station'] || '',
+province: res.data.Result[0]['Province'] || '',
+district: res.data.Result[0]['District'] || '',
+pollingDivision: res.data.Result[0]['Polling Division'] || '',
+currentPosition: res.data.Result[0]['Current Position'] || '',
+experience: res.data.Result[0]['Experience'] || '',
+currentSalary: res.data.Result[0]['Current Salary'] || '',
+positionType: res.data.Result[0]['Position Type'] || '',
+institutionName: res.data.Result[0]['Name of Institute'] || '',
+});
+}
+})
+.catch(err => console.log(err));
+}, [id]);
 const [provinces, setProvinces] = useState([]);
 const [districts, setDistricts] = useState([]);
 const [pollingDivisions, setPollingDivisions] = useState([]);
-
 const handleSubmit = (e) => {
-   e.preventDefault();
-
-   if (validateForm()) {
-     axios
-       .post('http://localhost:8081/create', formData)
-       .then((res) => {
-         if (res.data.Status === 'Success') {
-           console.log('Data submitted successfully.');
-           navigate('/users');
-         } else {
-           // Handle the error case
-           console.log('Error:', res.data.Error);
-         }
-       })
-       .catch((err) => {
-         if (err.response) {
-           // Handle network or server error
-           console.log('Server Error:', err.response.data);
-         } else {
-           // Handle other types of errors
-           console.log('An error occurred:', err.message);
-         }
-       });
-   } else {
-     console.log('Form has errors. Please check.');
-   }
- };
-
+e.preventDefault();
+axios.put('http://localhost:8081/update/'+id, formData)
+.then(res => {
+if (res.data.Status === 'Success') {
+console.log('Data submitted successfully.');
+// Optionally, reset or navigate after successful submission
+navigate('/users')
+} else {
+// Handle the error case
+console.log('Error:', res.data.Error);
+}
+})
+.catch(err => {
+if (err.response) {
+// Handle network or server error
+console.log('Server Error:', err.response.data);
+} else {
+// Handle other types of errors
+console.log('An error occurred:', err.message);
+}
+});
+// console.log(formData);
+};
 return (
 <div className="container-fluid mt-5 add-users">
-   <h1 className="text-center">Add Users</h1>
+   <h1 className="text-center">Update Users</h1>
    <div className="row justify-content-center">
       {/* Centering the form */}
       <div className="col-md-10">
@@ -184,21 +97,24 @@ return (
             <div className="form-group">
                <label>Full Name</label>
                <input type="text" className="form-control" name="fullName" value={formData.fullName} onChange={handleChange} />
-               {errors.fullName && <span className="error-text">{errors.fullName}</span>}
             </div>
             <div className="row">
                <div className="col-md-6">
                   <div className="form-group">
                      <label>Date of Birth</label>
-                     <input type="date" className="form-control" name="dob" value={formData.dob} onChange={handleChange} />
-                     {errors.dob && <span className="error-text">{errors.dob}</span>}
+                     <input
+                     type="date"
+                     className="form-control"
+                     name="dob"
+                     value={formData.dob ? formData.dob.slice(0, 10) : ''} // Convert to YYYY-MM-DD format
+                     onChange={handleChange}
+                     />
                   </div>
                </div>
                <div className="col-md-6">
                   <div className="form-group">
                      <label>Email</label>
                      <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
-                     {errors.email && <span className="error-text">{errors.email}</span>}
                   </div>
                </div>
             </div>
@@ -207,21 +123,18 @@ return (
                   <div className="form-group">
                      <label>NIC</label>
                      <input type="text" className="form-control" name="nic" value={formData.nic} onChange={handleChange} />
-                     {errors.nic && <span className="error-text">{errors.nic}</span>}
                   </div>
                </div>
                <div className="col-md-6">
                   <div className="form-group">
                      <label>Age</label>
                      <input type="number" className="form-control" name="age" value={formData.age} onChange={handleChange} />
-                     {errors.age && <span className="error-text">{errors.age}</span>}
                   </div>
                </div>
             </div>
             <div className="form-group">
                <label>Educational Level</label>
                <input type="text" className="form-control" name="eduLevel" value={formData.eduLevel} onChange={handleChange} />
-               {errors.eduLevel && <span className="error-text">{errors.eduLevel}</span>}
             </div>
             <div className="form-group">
                <label>Gender</label>
@@ -234,14 +147,11 @@ return (
                   <input type="radio" className="form-check-input" name="gender" value="female" checked={formData.gender === 'female'} onChange={handleChange} />
                   Female
                   </label>
-                  {errors.gender && <span className="error-text">{errors.gender}</span>}
-
                </div>
             </div>
             <div className="form-group">
                <label>Current City</label>
                <input type="text" className="form-control" name="currentCity" value={formData.currentCity} onChange={handleChange} />
-               {errors.currentCity && <span className="error-text">{errors.currentCity}</span>}
             </div>
             <div className="form-group">
                <label>Province</label>
@@ -253,7 +163,6 @@ return (
                   </option>
                   ))}
                </select>
-               {errors.province && <span className="error-text">{errors.province}</span>}
             </div>
             <div className="form-group">
                <label>District</label>
@@ -265,7 +174,6 @@ return (
                   </option>
                   ))}
                </select>
-               {errors.district && <span className="error-text">{errors.district}</span>}
             </div>
             <div className="form-group">
                <label>Polling Division</label>
@@ -277,12 +185,10 @@ return (
                   </option>
                   ))}
                </select>
-               {errors.pollingDivision && <span className="error-text">{errors.pollingDivision}</span>}
             </div>
             <div className="form-group">
                <label>Polling Station</label>
                <input type="text" className="form-control" name="pollingStation" value={formData.pollingStation} onChange={handleChange} />
-               {errors.pollingStation && <span className="error-text">{errors.pollingStation}</span>}
             </div>
             <h2>Service Details</h2>
             <div className="form-group">
@@ -294,8 +200,6 @@ return (
                   value={formData.currentPosition}
                   onChange={handleChange}
                   />
-                            {errors.currentPosition && <span className="error-text">{errors.currentPosition}</span>}
-
             </div>
             <div className="form-group">
                <label>Experience</label>
@@ -306,8 +210,6 @@ return (
                   value={formData.experience}
                   onChange={handleChange}
                   />
-                            {errors.experience && <span className="error-text">{errors.experience}</span>}
-
             </div>
             <div className="form-group">
                <label>Current Salary</label>
@@ -318,8 +220,6 @@ return (
                   value={formData.currentSalary}
                   onChange={handleChange}
                   />
-                            {errors.currentSalary && <span className="error-text">{errors.currentSalary}</span>}
-
             </div>
             <div className="form-group">
                <label>Name of Institution</label>
@@ -330,8 +230,6 @@ return (
                   value={formData.institutionName}
                   onChange={handleChange}
                   />
-                            {errors.institutionName && <span className="error-text">{errors.institutionName}</span>}
-
             </div>
             <div className="form-group">
                <label>Position Type</label>
@@ -342,12 +240,10 @@ return (
                   value={formData.positionType}
                   onChange={handleChange}
                   />
-                            {errors.positionType && <span className="error-text">{errors.positionType}</span>}
-
             </div>
             <div className="mt-3 mb-4 text-right">
                <button type="submit" className="btn btn-primary">
-               Add User
+               Update User
                </button>
             </div>
          </form>
@@ -356,4 +252,4 @@ return (
 </div>
 );
 }
-export default Addusers;
+export default Editusers;
