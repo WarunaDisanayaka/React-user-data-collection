@@ -4,6 +4,8 @@ import { saveAs } from 'file-saver';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Container, Table ,Button} from 'react-bootstrap'; // Import Bootstrap components
 import { Link } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 
 function User() {
@@ -33,6 +35,40 @@ function User() {
       console.error('Error creating CSV:', error);
     }
   };
+
+  const downloadPdf = () => {
+    try {
+      const pdf = new jsPDF();
+      
+      // Add a title to the PDF
+      pdf.text('Census of Officers Election Report', 10, 10);
+  
+      // Add table headers
+      const headers = ['Full Name', 'DOB', 'Email', 'Age', 'Education Level', 'Gender', 'Current City'];
+      const dataRows = data.map(employee => [
+        employee['Full Name'],
+        employee['DOB'],
+        employee['Email'],
+        employee['Age'],
+        employee['Education Level'],
+        employee['Gender'],
+        employee['Current City']
+      ]);
+  
+      pdf.autoTable({
+        head: [headers],
+        body: dataRows,
+        startY: 20,
+        margin: { top: 20 }
+      });
+  
+      // Save the PDF
+      pdf.save('user_data.pdf');
+    } catch (error) {
+      console.error('Error creating PDF:', error);
+    }
+  };
+  
   
   const handleDelete = (id)=>{
     axios.delete('http://localhost:8081/delete/'+id)
@@ -65,6 +101,9 @@ function User() {
         <Button variant="success" className="my-3 ms-3" onClick={downloadCsv}>
           Download CSV
         </Button>
+        <Button variant="success" className="my-3 ms-3" onClick={downloadPdf}>
+    Download PDF
+  </Button>
       </div>
       <Table striped bordered hover className="mt-3">
         <thead>

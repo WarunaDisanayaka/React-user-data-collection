@@ -21,7 +21,7 @@ categorical_columns = [
 # Custom CORS middleware
 @app.after_request
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'  # Adjust this to your React app's URL
+    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3001'  # Adjust this to your React app's URL
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
     return response
 
