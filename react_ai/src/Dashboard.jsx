@@ -34,7 +34,10 @@ function Dashboard() {
 								<Link to="/prediction" className="nav-link px-0 align-middle text-white">
                                 <i className="fs-4 bi bi-bar-chart"></i> <span className="ms-1 d-none d-sm-inline">Prediction</span> </Link>
 							</li>
-							
+							<li>
+								<Link to="/predictioncolombo" className="nav-link px-0 align-middle text-white">
+                                <i className="fs-4 bi bi-bar-chart"></i> <span className="ms-1 d-none d-sm-inline">Prediction Colombo</span> </Link>
+							</li>
 							<li onClick={handleLogout}>
 								<a href="#" className="nav-link px-0 align-middle text-white">
 									<i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span></a>

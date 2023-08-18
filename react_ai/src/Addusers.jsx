@@ -140,9 +140,46 @@ setFormData((prevData) => ({
  };
  
 
-const [provinces, setProvinces] = useState([]);
-const [districts, setDistricts] = useState([]);
+const [provinces, setProvinces] = useState([
+   { id: '1', name: 'Central' },
+   { id: '2', name: 'Eastern' },
+   { id: '3', name: 'North' },
+   { id: '4', name: 'North Central' },
+   { id: '5', name: 'North Western' },
+   { id: '6', name: 'Sabaragamuwa' },
+   { id: '7', name: 'Southern' },
+   { id: '8', name: 'Uva' },
+   { id: '9', name: 'Western' },
+]);
+const [districts, setDistricts] = useState([
+   { id: '1', name: 'Ampara' },
+   { id: '2', name: 'Anuradhapura' },
+   { id: '3', name: 'Badulla' },
+   { id: '4', name: 'Batticaloa' },
+   { id: '5', name: 'Colombo' },
+   { id: '6', name: 'Galle' },
+   { id: '7', name: 'Gampaha' },
+   { id: '8', name: 'Hambantota' },
+   { id: '9', name: 'Jaffna' },
+   { id: '10', name: 'Kalutara' },
+   { id: '11', name: 'Kandy' },
+   { id: '12', name: 'Kegalle' },
+   { id: '13', name: 'Kilinochchi' },
+   { id: '14', name: 'Kurunegala' },
+   { id: '15', name: 'Mannar' },
+   { id: '16', name: 'Matale' },
+   { id: '17', name: 'Matara' },
+   { id: '18', name: 'Moneragala' },
+   { id: '19', name: 'Mullativu' },
+   { id: '20', name: 'Nuwara Eliya' },
+   { id: '21', name: 'Polonnaruwa' },
+   { id: '22', name: 'Puttlam' },
+   { id: '23', name: 'Ratnapura' },
+   { id: '24', name: 'Trincomalee' },
+   { id: '25', name: 'Vavuniya' },
+]);
 const [pollingDivisions, setPollingDivisions] = useState([]);
+
 
 const handleSubmit = (e) => {
    e.preventDefault();
@@ -269,14 +306,7 @@ return (
             </div>
             <div className="form-group">
                <label>Polling Division</label>
-               <select className="form-control" name="pollingDivision" value={formData.pollingDivision} onChange={handleChange}>
-                  <option value="">Select Polling Division</option>
-                  {pollingDivisions.map(pollingDivision => (
-                  <option key={pollingDivision.id} value={pollingDivision.id}>
-                     {pollingDivision.name}
-                  </option>
-                  ))}
-               </select>
+               <input type="text" className="form-control" name="pollingDivision" value={formData.pollingDivision} onChange={handleChange} />
                {errors.pollingDivision && <span className="error-text">{errors.pollingDivision}</span>}
             </div>
             <div className="form-group">
