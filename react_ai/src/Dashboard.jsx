@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import axios from 'axios'
@@ -6,6 +6,17 @@ import axios from 'axios'
 
 function Dashboard() {
     const navigate = useNavigate()
+	axios.defaults.withCredentials = true;
+	useEffect(() => {
+		axios.get('http://localhost:8081/dashboard')
+		.then(res=>{
+			if (res.data.Status === "Success") {
+				
+			}else{
+				navigate('/login')
+			}
+		})
+	}, [])
 
     const handleLogout = () => {
 		axios.get('http://localhost:8081/logout')
@@ -39,7 +50,7 @@ function Dashboard() {
                                 <i className="fs-4 bi bi-bar-chart"></i> <span className="ms-1 d-none d-sm-inline">Prediction Colombo</span> </Link>
 							</li>
 							<li onClick={handleLogout}>
-								<a href="#" className="nav-link px-0 align-middle text-white">
+								<a href="" className="nav-link px-0 align-middle text-white">
 									<i className="fs-4 bi-power"></i> <span className="ms-1 d-none d-sm-inline">Logout</span></a>
 							</li>
 						</ul>

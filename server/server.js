@@ -6,7 +6,13 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const app= express();
-app.use(cors());
+app.use(cors(
+    {
+        origin:["http://localhost:3001"],
+        methods:["POST","GET","PUT"],
+        credentials: true
+    }
+));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -28,17 +34,42 @@ con.connect(function(err){
     }
 });
 
+const verifyUser = (req,res,next)=>{
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json({Error:"You are no Authenticated"})
+    }else{
+        jwt.verify(token,"jwt-secret-key",(err,decode)=>{
+            if (err) return res.json({Error:"Token wrong"});
+            next();
+        })
+    }
+}
+
+app.get('/dashboard',verifyUser,(req,res)=>{
+    return res.json({Status:"Success"})
+})
+
+
 // Login API
 app.post('/login',(req,res)=>{
     const sql="SELECT * FROM admin WHERE username=? AND password=?";
     con.query(sql,[req.body.email,req.body.password],(err,result)=>{
         if (err) return res.json({Error:"Error in Server"});
         if (result.length>0) {
+            const id = result[0].id;
+            const token = jwt.sign({id},"jwt-secret-key",{expiresIn:'1d'});
+            res.cookie('token',token);
             return res.json({Status:"Success"});
         }else{
             return res.json({Status:"Error"}); 
         }
     })
+});
+
+app.get('/logout',(req,res)=>{
+   res.clearCookie('token');
+   return res.json({Status:"Sucess"})
 });
 
 // Insert API
