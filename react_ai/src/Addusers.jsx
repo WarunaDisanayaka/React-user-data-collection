@@ -21,6 +21,8 @@ const [formData, setFormData] = useState({
     currentSalary: '',
     positionType:'',
     institutionName: '',
+    famName:'',
+    famStation:''
   });
 
   const navigate=useNavigate();
@@ -31,6 +33,11 @@ const { name, value } = e.target;
 setFormData((prevData) => ({
   ...prevData,
   [name]: value,
+    }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: '', 
     }));
   };
 
@@ -52,6 +59,8 @@ setFormData((prevData) => ({
    currentSalary: '',
    positionType: '',
    institutionName: '',
+   famName:'',
+   famStation:''
  });
  
  const isValidEmail = (email) => {
@@ -134,6 +143,14 @@ setFormData((prevData) => ({
    if (!formData.positionType) {
      newErrors.positionType = 'Position Type is required';
    }
+
+   if (!formData.famName) {
+      newErrors.famName = 'Family members are required';
+    }
+
+    if (!formData.famStation) {
+      newErrors.famStation = 'Family members polling station is required';
+    }
  
    setErrors(newErrors);
    return Object.values(newErrors).every((error) => error === '');
@@ -373,6 +390,31 @@ return (
                   onChange={handleChange}
                   />
                             {errors.positionType && <span className="error-text">{errors.positionType}</span>}
+
+            </div>
+            <h2>Service Details</h2>
+            <div className="form-group">
+               <label>Family Members Names</label>
+               <input
+                  type="text"
+                  className="form-control"
+                  name="famName"
+                  value={formData.famName}
+                  onChange={handleChange}
+                  />
+               {errors.famName && <span className="error-text">{errors.famName}</span>}
+
+            </div>
+            <div className="form-group">
+               <label>Family Members Polling Station</label>
+               <input
+                  type="text"
+                  className="form-control"
+                  name="famStation"
+                  value={formData.famStation}
+                  onChange={handleChange}
+                  />
+               {errors.famStation && <span className="error-text">{errors.famStation}</span>}
 
             </div>
             <div className="mt-3 mb-4 text-right">

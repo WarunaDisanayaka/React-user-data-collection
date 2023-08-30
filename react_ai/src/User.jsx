@@ -20,10 +20,18 @@ function User() {
 
   const downloadCsv = () => {
     try {
+      if (data.length === 0) {
+        console.log('No data available to export.');
+        return;
+      }
+  
+      // Extract headers from the first employee object in the data array
+      const headers = Object.keys(data[0]);
+  
       // Create CSV content
       const csvContent = [
-        Object.keys(data[0]).join(','), // CSV header row
-        ...data.map(employee => Object.values(employee).join(',')), // Data rows
+        headers.join(','), // CSV header row
+        ...data.map(employee => headers.map(header => employee[header]).join(',')), // Data rows
       ].join('\n');
   
       // Create a Blob with the CSV content
@@ -35,6 +43,8 @@ function User() {
       console.error('Error creating CSV:', error);
     }
   };
+  
+  
 
   const downloadPdf = () => {
     try {

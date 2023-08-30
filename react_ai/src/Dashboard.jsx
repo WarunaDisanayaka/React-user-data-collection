@@ -40,10 +40,10 @@ function Dashboard() {
 								<Link to="/users" className="nav-link px-0 align-middle text-white">
 									<i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Users</span> </Link>
 							</li>
-                            <li>
+                            {/* <li>
 								<Link to="/prediction" className="nav-link px-0 align-middle text-white">
                                 <i className="fs-4 bi bi-bar-chart"></i> <span className="ms-1 d-none d-sm-inline">Prediction</span> </Link>
-							</li>
+							</li> */}
 							<li>
 								<Link to="/predictioncolombo" className="nav-link px-0 align-middle text-white">
                                 <i className="fs-4 bi bi-bar-chart"></i> <span className="ms-1 d-none d-sm-inline">Prediction Colombo</span> </Link>
