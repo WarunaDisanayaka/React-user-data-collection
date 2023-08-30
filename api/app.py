@@ -2,18 +2,23 @@ from flask import Flask, request, jsonify
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 import joblib
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)  
 
 # Load the trained model and scaler
 model = joblib.load('trained_model.joblib')
 scaler = joblib.load('scaler.joblib')
 
+cors = CORS(app, resources={r"/predict": {"origins": "http://localhost:3000", "supports_credentials": True}})
+
 # Define the categorical columns for label encoding
 categorical_columns = [
     "Education Level", "Gender", "Current City", "Province", "District",
     "Polling Division", "Polling Station", "Current Position of the Job",
-    "Name of the Institute"
+    "Name of the Institute","FamName","FamPollingStation"
 ]
 
 # Custom CORS middleware
