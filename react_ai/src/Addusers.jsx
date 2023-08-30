@@ -1,6 +1,9 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import './Addusers.css'; // Make sure to adjust the path if needed
+
 function Addusers() {
 
 const [formData, setFormData] = useState({
@@ -28,12 +31,19 @@ const [formData, setFormData] = useState({
   const navigate=useNavigate();
 
 const handleChange = (e) => {
-const { name, value } = e.target;
+   const { name, value, type, checked } = e.target;
 
-setFormData((prevData) => ({
-  ...prevData,
-  [name]: value,
-    }));
+   if (type === 'checkbox') {
+     setFormData((prevData) => ({
+       ...prevData,
+       [name]: checked,
+     }));
+   } else {
+     setFormData((prevData) => ({
+       ...prevData,
+       [name]: value,
+     }));
+   }
 
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -201,29 +211,40 @@ const [pollingDivisions, setPollingDivisions] = useState([]);
 const handleSubmit = (e) => {
    e.preventDefault();
 
-   if (validateForm()) {
-     axios
-       .post('http://localhost:8081/create', formData)
-       .then((res) => {
-         if (res.data.Status === 'Success') {
-           console.log('Data submitted successfully.');
-           navigate('/users');
-         } else {
-           // Handle the error case
-           console.log('Error:', res.data.Error);
-         }
-       })
-       .catch((err) => {
-         if (err.response) {
-           // Handle network or server error
-           console.log('Server Error:', err.response.data);
-         } else {
-           // Handle other types of errors
-           console.log('An error occurred:', err.message);
-         }
-       });
+   if (!formData.intimidationThreats && !formData.voterSuppression && !formData.clashesPollingStations && !formData.attackCandidates && !formData.disruptionCampaignEvents) {
+      // None of the violent cases checkboxes are checked
+      console.log('No violent cases selected. You can submit the form.');
+      
+      if (validateForm()) {
+         axios
+           .post('http://localhost:8081/create', formData)
+           .then((res) => {
+             if (res.data.Status === 'Success') {
+               console.log('Data submitted successfully.');
+               Swal.fire('Success', 'Data submitted successfully.', 'success').then(() => {
+                  navigate('/users');
+                  Swal.fire('Thank You', 'Your form has been submitted. You will now be redirected to the Users page.', 'info');
+               });
+             } else {
+               // Handle the error case
+               console.log('Error:', res.data.Error);
+             }
+           })
+           .catch((err) => {
+             if (err.response) {
+               // Handle network or server error
+               console.log('Server Error:', err.response.data);
+             } else {
+               // Handle other types of errors
+               console.log('An error occurred:', err.message);
+             }
+           });
+       } else {
+         console.log('Form has errors. Please check.');
+       }
    } else {
-     console.log('Form has errors. Please check.');
+      // At least one violent case checkbox is checked
+      Swal.fire('Alert', "Cannot submit the form with violent cases selected. Please uncheck the violent cases checkboxes.", 'warning');
    }
  };
 
@@ -417,6 +438,61 @@ return (
                {errors.famStation && <span className="error-text">{errors.famStation}</span>}
 
             </div>
+            <h2>Violent Cases</h2>
+<div className="form-group">
+   <label>Violent Cases</label>
+   <div className="form-check">
+      <input
+         type="checkbox"
+         className="form-check-input"
+         name="intimidationThreats"
+         checked={formData.intimidationThreats}
+         onChange={handleChange}
+      />
+      <label className="form-check-label">Intimidation and Threats</label>
+   </div>
+   <div className="form-check">
+      <input
+         type="checkbox"
+         className="form-check-input"
+         name="voterSuppression"
+         checked={formData.voterSuppression}
+         onChange={handleChange}
+      />
+      <label className="form-check-label">Voter Suppression</label>
+   </div>
+   <div className="form-check">
+      <input
+         type="checkbox"
+         className="form-check-input"
+         name="clashesPollingStations"
+         checked={formData.clashesPollingStations}
+         onChange={handleChange}
+      />
+      <label className="form-check-label">Clashes at Polling Stations</label>
+   </div>
+   <div className="form-check">
+      <input
+         type="checkbox"
+         className="form-check-input"
+         name="attackCandidates"
+         checked={formData.attackCandidates}
+         onChange={handleChange}
+      />
+      <label className="form-check-label">Attack on Candidates</label>
+   </div>
+   <div className="form-check">
+      <input
+         type="checkbox"
+         className="form-check-input"
+         name="disruptionCampaignEvents"
+         checked={formData.disruptionCampaignEvents}
+         onChange={handleChange}
+      />
+      <label className="form-check-label">Disruption of Campaign Events</label>
+   </div>
+</div>
+
             <div className="mt-3 mb-4 text-right">
                <button type="submit" className="btn btn-primary">
                Add User

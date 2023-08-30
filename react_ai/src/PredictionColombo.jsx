@@ -84,7 +84,6 @@ function PredictionColombo() {
         console.log('Prediction Result:', response.data);
         // Handle the prediction result here (e.g., display the result)
         setPredictionResult(response.data);
-
       })
       .catch(error => {
         console.error('Prediction Error:', error);
@@ -93,7 +92,7 @@ function PredictionColombo() {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 add-users">
       <h2>Prediction Upload</h2>
       <div className="section">
         <h4>Location Details</h4>

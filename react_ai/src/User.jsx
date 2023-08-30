@@ -6,6 +6,8 @@ import { Container, Table ,Button} from 'react-bootstrap'; // Import Bootstrap c
 import { Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import Papa from 'papaparse';
+
 
 
 function User() {
@@ -25,24 +27,15 @@ function User() {
         return;
       }
   
-      // Extract headers from the first employee object in the data array
-      const headers = Object.keys(data[0]);
+      const csvContent = Papa.unparse(data, { header: true });
   
-      // Create CSV content
-      const csvContent = [
-        headers.join(','), // CSV header row
-        ...data.map(employee => headers.map(header => employee[header]).join(',')), // Data rows
-      ].join('\n');
-  
-      // Create a Blob with the CSV content
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
-  
-      // Use the FileSaver library to initiate the download
       saveAs(blob, 'user_data.csv');
     } catch (error) {
       console.error('Error creating CSV:', error);
     }
   };
+  
   
   
 
@@ -54,7 +47,7 @@ function User() {
       pdf.text('Census of Officers Election Report', 10, 10);
   
       // Add table headers
-      const headers = ['Full Name', 'DOB', 'Email', 'Age', 'Education Level', 'Gender', 'Current City'];
+      const headers = ['Full Name', 'DOB', 'Email', 'Age', 'Education Level', 'Gender', 'Current City','Province', 'District', 'Polling Division', 'Polling Station', 'Current Position', 'Name of Institute', 'Experience', 'Current Salary', 'Position Type', 'NIC','FamName','FamPollingStation'];
       const dataRows = data.map(employee => [
         employee['Full Name'],
         employee['DOB'],
@@ -62,7 +55,18 @@ function User() {
         employee['Age'],
         employee['Education Level'],
         employee['Gender'],
-        employee['Current City']
+        employee['Current City'],
+        employee['Province'],
+        employee['District'],
+        employee['Polling Division'],
+        employee['Current Position'],
+        employee['Name of Institute'],
+        employee['Experience'],
+        employee['Current Salary'],
+        employee['Position Type'],
+        employee['NIC'],
+        employee['FamName'],
+        employee['FamPollingStation']
       ]);
   
       pdf.autoTable({
@@ -102,7 +106,7 @@ function User() {
   }, [])
 
   return (
-    <Container className="d-flex flex-column align-items-center">
+    <Container className="d-flex flex-column align-items-center add-users">
       <h1 className="mt-5">Census of Officers Election Report </h1>
       <div className="d-flex justify-content-end w-100">
         <Link to="/create" variant="primary" className="btn btn-primary my-3">
@@ -138,6 +142,7 @@ function User() {
             <td>{employee['Education Level']}</td>
             <td>{employee['Gender']}</td>
             <td>{employee['Current City']}</td>
+            
             <td>
               <Link to={`/employeeEdit/`+employee.id} className='btn btn-primary btn-sm me-2'>Edit</Link>
               <button onClick={e=>handleDelete(employee.id)} className='btn btn-sm btn-danger'>Delete</button>

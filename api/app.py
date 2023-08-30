@@ -27,7 +27,7 @@ def predict():
     fam_polling_stations = new_data['FamPollingStation']
     new_data = new_data.drop(["Full Name", "Email", "DOB", "Position Type"], axis=1)
     new_data['Experience'] = new_data['Experience'].str.replace(' years', '').astype(int)
-    new_data['Current Salary'] = new_data['Current Salary'].str.replace('[$,]', '', regex=True).astype(float)
+    new_data['Current Salary'] = new_data['Current Salary'].str.replace('[Rs,]', '', regex=True).astype(float)
 
     label_encoder = LabelEncoder()
 

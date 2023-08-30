@@ -74,7 +74,7 @@ app.get('/logout',(req,res)=>{
 
 // Insert API
 app.post('/create', (req, res) => {
-    const sql = "INSERT INTO VoterInformation (`Full Name`, `DOB`, `Email`, `Age`, `Education Level`, `Gender`, `Current City`, `Province`, `District`, `Polling Division`, `Polling Station`, `Current Position`, `Name of Institute`, `Experience`, `Current Salary`, `Position Type`, `NIC`,`FamName`,`FamPollingStation`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+    const sql = "INSERT INTO VoterInformation (`Full Name`, `DOB`, `Email`, `Age`, `Education Level`, `Gender`, `Current City`, `Province`, `District`, `Polling Division`, `Polling Station`, `Current Position of the Job`, `Name of the Institute`, `Experience`, `Current Salary`, `Position Type`, `NIC`,`FamName`,`FamPollingStation`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
     const values = [
         req.body.fullName,
         req.body.dob,

@@ -1,0 +1,6 @@
+Full Name	DOB	Email	Age	Education Level	Gender	Current City	Province	District	Polling Division	Polling Station	Current Position of the Job	Name of the Institute	Experience	Current Salary	Position Type	FamName	FamPollingStation
+Sara Scott	1932-11-15	gabriellewalton@example.net	52	AL	Male	Jasonview	Central	Port Veronicatown	8	4	Principal	Reyes and Sons	12 years	Rs27841	Senior Polling Officer	Contreras	Fds
+Melissa Wade	1970-07-09	gturner@example.net	38	High School Diploma	Other	Port Moniqueside	Anuradhapura	Parkershire	3	82	Teacher	Reid, Gray and Keith	2 years	Rs60571	Junior Polling Officer	Glenn	A - Colombo North
+Christian Schultz	1984-01-20	salinasthomas@example.org	52	AL	Male	Lake Caitlin	Anuradhapura	Nicolehaven	10	8	Administrative Officer	Lucas Inc	19 years	Rs41279	Senior Polling Officer	Donovan	Fds
+Mary Mitchell	1945-10-15	harrisneil@example.net	59	AL	Female	Jasonland	North Western	Gilbertview	8	48	Development Officer	Cabrera, James and Buckley	19 years	Rs99854	Junior Polling Officer	Love	A - Colombo North
+Wayne Lyons	2013-08-31	troyprice@example.net	63	Bachelor's Degree	Male	Joshuaburgh	Uva	Dylanside	7	68	Librarian	Powell Ltd	13 years	Rs50014	Junior Polling Officer	Rice	Fds
