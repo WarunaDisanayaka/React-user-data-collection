@@ -6,6 +6,7 @@ import axios from 'axios'
 
 function Dashboard() {
     const navigate = useNavigate()
+	axios.defaults.withCredentials = true;
 	useEffect(() => {
 		axios.get('http://localhost:8081/dashboard')
 		.then(res=>{

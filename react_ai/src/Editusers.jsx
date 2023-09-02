@@ -20,6 +20,8 @@ experience: '',
 currentSalary: '',
 positionType:'',
 institutionName: '',
+famName:'',
+famStation:''
 });
 const [data, setData] = useState([]);
 const handleChange = (e) => {
@@ -49,11 +51,13 @@ pollingStation: res.data.Result[0]['Polling Station'] || '',
 province: res.data.Result[0]['Province'] || '',
 district: res.data.Result[0]['District'] || '',
 pollingDivision: res.data.Result[0]['Polling Division'] || '',
-currentPosition: res.data.Result[0]['Current Position'] || '',
+currentPosition: res.data.Result[0]['Current Position of the Job'] || '',
 experience: res.data.Result[0]['Experience'] || '',
 currentSalary: res.data.Result[0]['Current Salary'] || '',
 positionType: res.data.Result[0]['Position Type'] || '',
-institutionName: res.data.Result[0]['Name of Institute'] || '',
+institutionName: res.data.Result[0]['Name of the Institute'] || '',
+famName: res.data.Result[0]['FamName'] ||'',
+famStation: res.data.Result[0]['FamPollingStation'] ||'',
 });
 }
 })
@@ -240,6 +244,29 @@ return (
                   value={formData.positionType}
                   onChange={handleChange}
                   />
+            </div>
+            <div className="form-group">
+               <label>Family Members Names</label>
+               <input
+                  type="text"
+                  className="form-control"
+                  name="famName"
+                  value={formData.famName}
+                  onChange={handleChange}
+                  />
+               
+
+            </div>
+            <div className="form-group">
+               <label>Family Members Polling Station</label>
+               <input
+                  type="text"
+                  className="form-control"
+                  name="famStation"
+                  value={formData.famStation}
+                  onChange={handleChange}
+                  />
+               
             </div>
             <div className="mt-3 mb-4 text-right">
                <button type="submit" className="btn btn-primary">

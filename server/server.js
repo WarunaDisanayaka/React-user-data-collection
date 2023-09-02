@@ -9,7 +9,7 @@ const app= express();
 app.use(cors(
     {
         origin:["http://localhost:3000"],
-        methods:["POST","GET","PUT"],
+        methods:["POST","GET","PUT","DELETE"],
         credentials: true
     }
 ));
@@ -141,14 +141,16 @@ app.put('/update/:id', (req, res) => {
         District=?, 
         \`Polling Division\`=?, 
         \`Polling Station\`=?, 
-        \`Current Position\`=?, 
-        \`Name of Institute\`=?, 
+        \`Current Position of the Job\`=?, 
+        \`Name of the Institute\`=?, 
         Experience=?, 
         \`Current Salary\`=?, 
         \`Position Type\`=?, 
-        NIC=?  
+        NIC=?,
+        FamName=?,
+        FamPollingStation=?
       WHERE id = ?`;
-    
+
     const values = [
       req.body.fullName,
       req.body.dob,
@@ -167,18 +169,20 @@ app.put('/update/:id', (req, res) => {
       req.body.currentSalary,
       req.body.positionType,
       req.body.nic,
+      req.body.famName,
+      req.body.famStation,
       id // Place id at the end of the values array
     ];
-    
+
     con.query(sql, values, (err, result) => {
-        if (err) {
-          console.error('SQL Error:', err); // Log the error
-          return res.json({ Error: "Update error in SQL" });
-        }
-        return res.json({ Status: "Success", Result: result });
-      });
-      
-  });
+      if (err) {
+        console.error('SQL Error:', err); // Log the error
+        return res.json({ Error: err.message }); // Send the SQL error message in the response
+      }
+      return res.json({ Status: "Success", Result: result });
+    });
+});
+
 
   app.delete('/delete/:id',(req,res)=>{
     const id=req.params.id;
